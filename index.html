@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center; 
+                flex-direction: column;
+            }
+            #game{
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                background-color: #ba435e;
+                border-radius: 5px;
+            }
+            .buttonGame{
+                background-color:#ee8da4;
+                margin: 15px;
+                border: 0px;
+                height: 100px;
+                width: 100px;
+                color: #f6e0ff;
+                border-radius: 5px;
+                font-size: 40px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1>Jogo da Velha</h1>
+        <div id="game"> </div>
+
+        <script>
+            let jogadas = [
+                '','','',
+                '','','',
+                '','','',
+            ];
+            let turnos = 0;
+            let gameover = false;
+            const game = document.querySelector('#game');
+
+            function clickJogador(index){
+                if(jogadas[index] == '' && gameover == false){
+                    if(turnos%2 == 0){
+                    jogadas[index] = 'X';
+                }
+                else{
+                    jogadas[index] = 'O';
+                }
+                turnos++;
+                desenhaBotoes();
+                verificaGanhador();
+                }   
+            }
+            
+            function verificaCelulas(c1, c2, c3){
+                return (
+                jogadas[c1] != '' &&
+                jogadas[c2] != '' &&
+                jogadas[c3] != '' &&
+                jogadas[c1] == jogadas[c2] && 
+                jogadas[c2] == jogadas[c3]);
+            }
+
+            function verificaGanhador(){
+               if (
+                verificaCelulas(0, 1, 2)|| //linha 1
+                verificaCelulas(3, 4, 5) || //linha 2
+                verificaCelulas(6, 7, 8) || //linha 3
+
+                verificaCelulas(0, 3, 6) || //coluna 1
+                verificaCelulas(1, 4, 7) || //coluna 2
+                verificaCelulas(2, 5, 8) || //coluna 3
+
+                verificaCelulas(0, 4, 8) || //diagonal 1
+                verificaCelulas(2, 4, 6) //diagonal 2
+               ) {
+                gameover = true;
+                alert('Fim de jogo!')
+               }
+               
+            }
+            
+            function desenhaBotoes(){
+                game.innerHTML = '';
+                 for(let i=0; i<9; i++){
+                     game.innerHTML += `<button 
+                     class= "buttonGame" 
+                     onclick="clickJogador(${i})"
+                    > ${jogadas[i]} </button>` //'<button>' + i + </button>
+                }
+            }
+            desenhaBotoes();
+        </script>
+    </body>
+</html>
